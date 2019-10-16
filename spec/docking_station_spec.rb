@@ -7,7 +7,7 @@ describe DockingStation do
     describe '#release_bike' do
       it 'should release a bike' do
         bike = Bike.new
-        subject.dock(bike)
+        20.times {subject.dock(bike)}
         expect(subject.release_bike).to eq bike
       end
       it 'raises an error when there are no bikes available' do
@@ -18,7 +18,8 @@ describe DockingStation do
     it 'should return docked bikes when using the bike method' do
       bike = Bike.new
       subject.dock(bike)
-      expect(subject.bike).to eq(bike)
+      expect(subject.bikes[-1]).to eq(bike)
+      p subject
     end
 
     describe '#dock' do
@@ -29,7 +30,7 @@ describe DockingStation do
 
       it 'should raise an error when the docking station is over capacity' do
         bike = Bike.new
-        subject.dock(bike)
+        20.times {subject.dock(bike)}
         expect {subject.dock(bike)}.to raise_error 'This dock is full!'
       end
     end
