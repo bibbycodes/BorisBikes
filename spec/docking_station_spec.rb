@@ -4,6 +4,17 @@ describe DockingStation do
   context "When Using the DockingStation Class" do
     it {is_expected.to respond_to(:release_bike)}
 
+    it "should allow the user to specify the value for capacity" do
+      amount = 30
+      docking_station_with_capacity = DockingStation.new(amount)
+      expect(docking_station_with_capacity.capacity).to eq 30
+    end
+
+    it "should have a default capacity of 20" do
+      docking_station_with_default = DockingStation.new
+      expect(docking_station_with_default.capacity).to eq 20
+    end
+
     describe '#release_bike' do
       it 'should release a bike' do
         bike = Bike.new
@@ -28,7 +39,7 @@ describe DockingStation do
       end
       it 'should raise an error when the docking station is over capacity' do
         bike = Bike.new
-        20.times {subject.dock(bike)}
+        DockingStation::DEFAULT_CAPACITY.times {subject.dock(bike)}
         expect{subject.dock(bike)}.to raise_error 'This dock is full!'
       end
     end
