@@ -2,9 +2,11 @@ require 'docking_station'
 
 describe DockingStation do
   context "When Using the DockingStation Class" do
+
     it "has a default capacity" do
       expect(subject.capacity).to eq(DockingStation::DEFAULT_CAPACITY)
     end
+
     it {is_expected.to respond_to(:release_bike)}
 
     it "should allow the user to specify the value for capacity" do
@@ -29,7 +31,7 @@ describe DockingStation do
         expect {subject.release_bike}.to raise_error 'No Bikes Left!'
       end
 
-      it "should not release a bike if it is broken" do
+      it "should raise an error if the bike is broken" do
         bike = Bike.new
         bike.report
         subject.dock(bike)
@@ -49,6 +51,13 @@ describe DockingStation do
         expect(subject.dock(bike)).to eq(bike)
       end
 
+      it "should dock a broken bike" do
+        bike = Bike.new
+        bike.report
+        subject.dock(bike)
+        expect(bike).to eq(subject.bikes[-1])
+      end
+
       it 'should raise an error when the docking station is over capacity' do
         bike = Bike.new
         subject.capacity.times {subject.dock(bike)}
@@ -57,40 +66,6 @@ describe DockingStation do
 
 
     end
-
-
-    # cant test private methods?
-    # describe "#full?" do
-
-    #   it 'should return true is the docking station is full' do
-    #     bike = Bike.new
-    #     20.times {subject.dock(bike)}
-    #     expect(subject.full?).to eq true
-    #   end
-
-    #   it 'should return false is the docking station is not full' do
-    #     bike = Bike.new
-    #     subject.dock(bike)
-    #     expect(subject.full?).to eq false
-    #   end
-    # end
-
-    # describe "#empty" do
-
-    #   it "should return true if the docking station is empty" do
-    #     bike = Bike.new
-    #     20.times {subject.dock(bike)}
-    #     20.times {subject.release_bike}
-    #     expect(subject.empty?).to eq true
-    #   end
-
-    #   it "should return false if the docking station is not empty" do
-    #     bike = Bike.new
-    #     subject.dock(bike)
-    #     expect(subject.empty?).to eq false
-    #   end
-    # end
-
   end
 end
 
